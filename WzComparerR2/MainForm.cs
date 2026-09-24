@@ -614,21 +614,21 @@ namespace WzComparerR2
             }
         }
 
-        private void OnSavePngFile(Frame frame)
+        private void OnSavePngFile(Frame frame, string pictureName = null, bool forceSaveDialog = false)
         {
             if (frame.Png != null)
             {
                 var config = ImageHandlerConfig.Default;
                 int page = frame.Page;
-                string pngFileName = pictureBoxEx1.PictureName + (frame.Png.ActualPages > 1 ? $".{page}" : null) + ".png";
+                string pngFileName = (pictureName ?? pictureBoxEx1.PictureName) + (frame.Png.ActualPages > 1 ? $".{page}" : null) + ".png";
 
-                if (config.AutoSaveEnabled)
+                if (!forceSaveDialog && config.AutoSaveEnabled)
                 {
                     pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
                 }
                 else
                 {
-                    var dlg = new SaveFileDialog();
+                    using var dlg = new SaveFileDialog();
                     dlg.Filter = "Png图片(*.png)|*.png|全部文件(*.*)|*.*";
                     dlg.FileName = pngFileName;
                     if (dlg.ShowDialog() != DialogResult.OK)

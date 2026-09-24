@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WzComparerR2.CanvasViewer\WzComparerR2.CanvasViewer.csproj" />
+    <ProjectReference Include="..\WzComparerR2\WzComparerR2.csproj" />
+    <ProjectReference Include="..\WzComparerR2.PluginBase\WzComparerR2.PluginBase.csproj" />
+    <ProjectReference Include="..\WzComparerR2.WzLib\WzComparerR2.WzLib.csproj" />
+    <Reference Include="DevComponents.DotNetBar2" HintPath="..\References\DevComponents.DotNetBar2.dll" />
+  </ItemGroup>
+  <Target Name="CopyNativeLibraries" AfterTargets="Build">
+    <ItemGroup><NativeLib Include="..\WzComparerR2\bin\$(Configuration)\$(TargetFramework)\Lib\**\*" /></ItemGroup>
+    <Copy SourceFiles="@(NativeLib)" DestinationFiles="@(NativeLib->'$(OutDir)Lib\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
